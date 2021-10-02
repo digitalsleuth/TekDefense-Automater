@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 """
 The Automater.py module defines the main() function for Automater.
 
@@ -37,10 +37,10 @@ No exceptions exported.
 """
 
 import sys
-from siteinfo import SiteFacade, Site
-from utilities import Parser, IPWrapper
-from outputs import SiteDetailOutput
-from inputs import TargetFile
+from modules.siteinfo import SiteFacade, Site
+from modules.utilities import Parser, IPWrapper
+from modules.outputs import SiteDetailOutput
+from modules.inputs import TargetFile
 
 __VERSION__ = '0.21'
 __GITLOCATION__ = 'https://github.com/1aN0rmus/TekDefense-Automater'
@@ -65,7 +65,7 @@ def main():
 
     # if no target run and print help
     if parser.hasNoTarget():
-        print '[!] No argument given.'
+        print('[!] No argument given.')
         parser.print_help()  # need to fix this. Will later
         sys.exit()
 

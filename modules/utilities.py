@@ -667,7 +667,7 @@ class IPWrapper(object):
             iplist = target[:target.index("-")].split(".")
             iplast = target[target.index("-") + 1:]
             if int(iplist[3]) < int(iplast):
-                for lastoctet in xrange(int(iplist[3]), int(iplast) + 1):
+                for lastoctet in range(int(iplist[3]), int(iplast) + 1):
                     yield target[:target.rindex(".") + 1] + str(lastoctet)
             else:
                 yield target[:target.rindex(".") + 1] + str(iplist[3])

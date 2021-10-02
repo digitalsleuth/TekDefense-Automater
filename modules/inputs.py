@@ -10,7 +10,7 @@ TargetFile -- Provides a representation of a file containing target
               strings for Automater to utilize.
 SitesFile -- Provides a representation of the sites.xml
              configuration file.
-              
+
 Function(s):
 No global exportable functions are defined.
 
@@ -20,7 +20,7 @@ No exceptions exported.
 import os
 import hashlib
 import requests
-from outputs import SiteDetailOutput
+from modules.outputs import SiteDetailOutput
 from requests.exceptions import ConnectionError
 from requests.exceptions import HTTPError
 from xml.etree.ElementTree import ElementTree
@@ -32,10 +32,10 @@ class TargetFile(object):
     """
     TargetFile provides a Class Method to retrieve information from a file-
     based target when one is entered as the first parameter to the program.
-    
+
     Public Method(s):
     (Class Method) TargetList
-    
+
     Instance variable(s):
     No instance variables.
     """
@@ -45,14 +45,14 @@ class TargetFile(object):
         """
         Opens a file for reading.
         Returns each string from each line of a single or multi-line file.
-        
+
         Argument(s):
         filename -- string based name of the file that will be retrieved and parsed.
         verbose -- boolean value representing whether output will be printed to stdout
 
         Return value(s):
         Iterator of string(s) found in a single or multi-line file.
-        
+
         Restriction(s):
         This Method is tagged as a Class Method
         """
@@ -76,11 +76,11 @@ class SitesFile(object):
     tekdefense.xml will be downloaded and used by default. The local sites.xml is the user's capability to have local
     decisions made on top of the tekdefense.xml configuration file. Switches will be created to enable and disable
     these capabilities.
-    
+
     Method(s):
     (Class Method) getXMLTree
     (Class Method) fileExists
-    
+
     Instance variable(s):
     No instance variables.
     """
@@ -159,13 +159,13 @@ class SitesFile(object):
         """
         Opens a config file for reading.
         Returns XML Elementree object representing XML Config file.
-        
+
         Argument(s):
         No arguments are required.
-        
+
         Return value(s):
         ElementTree
-        
+
         Restrictions:
         File must be named sites.xml and must be in same directory as caller.
         This Method is tagged as a Class Method
@@ -189,13 +189,13 @@ class SitesFile(object):
     def fileExists(cls, filename):
         """
         Checks if a file exists. Returns boolean representing if file exists.
-        
+
         Argument(s):
         No arguments are required.
-        
+
         Return value(s):
         Boolean
-        
+
         Restrictions:
         File must be named sites.xml and must be in same directory as caller.
         This Method is tagged as a Class Method
