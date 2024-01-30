@@ -34,7 +34,7 @@ class SiteDetailOutput(object):
     _listofsites - list storing the list of site results stored.
     """
 
-    def __init__(self,sitelist):
+    def __init__(self, sitelist):
         """
         Class constructor. Stores the incoming list of sites in the _listofsites list.
 
@@ -67,7 +67,7 @@ class SiteDetailOutput(object):
             return None
         return self._listofsites
 
-    def createOutputInfo(self,parser):
+    def createOutputInfo(self, parser):
         """
         Checks parser information calls correct print methods based on parser requirements.
         Returns nothing.
@@ -133,7 +133,7 @@ class SiteDetailOutput(object):
                     for index in range(len(site.RegEx)):  # the regexs will ensure we have the exact number of lookups
                         siteimpprop = site.getImportantProperty(index)
                         if target != site.Target:
-                            print("\n**_ Results found for: " + site.Target + " _**")
+                            print(f"\n**_ Results found for: {site.Target} _**")
                             target = site.Target
                             # Check for them ALL to be None or 0 length
                         sourceurlhasnoreturn = True
@@ -143,49 +143,49 @@ class SiteDetailOutput(object):
                                     sourceurlhasnoreturn = False
 
                         if sourceurlhasnoreturn:
-                            print('[+] ' + site.SourceURL + ' No results found')
+                            print(f'[+] {site.SourceURL} No results found')
                             break
                         else:
                             if siteimpprop is None or len(siteimpprop) == 0:
-                                print("No results in the " + site.FriendlyName[index] + " category")
+                                print(f"No results in the {site.FriendlyName[index]} category")
                             else:
                                 if siteimpprop[index] is None or len(siteimpprop[index]) == 0:
-                                    print(site.ReportStringForResult[index] + ' No results found')
+                                    print(f'{site.ReportStringForResult[index]} No results found')
                                 else:
                                     laststring = ""
                                     # if it's just a string we don't want it output like a list
                                     if isinstance(siteimpprop[index], str):
-                                        if "" + site.ReportStringForResult[index] + " " + str(siteimpprop) != laststring:
-                                            print("" + site.ReportStringForResult[index] + " " + str(siteimpprop).replace('www.', 'www[.]').replace('http', 'hxxp'))
-                                            laststring = "" + site.ReportStringForResult[index] + " " + str(siteimpprop)
+                                        if f'{site.ReportStringForResult[index]} {str(siteimpprop)}' != laststring:
+                                            print(f'{site.ReportStringForResult[index]} {str(siteimpprop).replace("www.", "www[.]").replace("http", "hxxp")}')
+                                            laststring = f'{site.ReportStringForResult[index]} {str(siteimpprop)}'
                                     # must be a list since it failed the isinstance check on string
                                     else:
                                         laststring = ""
                                         for siteresult in siteimpprop[index]:
-                                            if "" + site.ReportStringForResult[index] + " " + str(siteresult) != laststring:
-                                                print("" + site.ReportStringForResult[index] + " " + str(siteresult).replace('www.', 'www[.]').replace('http', 'hxxp'))
-                                                laststring = "" + site.ReportStringForResult[index] + " " + str(siteresult)
+                                            if f'{site.ReportStringForResult[index]} {str(siteresult)}' != laststring:
+                                                print(f'{site.ReportStringForResult[index]} {str(siteresult).replace("www.", "www[.]").replace("http", "hxxp")}')
+                                                laststring = f'{site.ReportStringForResult[index]} {str(siteresult)}'
                 else:#this is a singlesite
                     siteimpprop = site.getImportantProperty(0)
                     if target != site.Target:
-                        print("\n**_ Results found for: " + site.Target + " _**")
+                        print(f"\n**_ Results found for: {site.Target} _**")
                         target = site.Target
                     if siteimpprop is None or len(siteimpprop)==0:
-                        print('[+] ' + site.FriendlyName + ' No results found')
+                        print(f'[+] {site.FriendlyName} No results found')
                     else:
                         laststring = ""
                         #if it's just a string we don't want it output like a list
                         if isinstance(siteimpprop, str):
-                            if "" + site.ReportStringForResult + " " + str(siteimpprop) != laststring:
-                                print("" + site.ReportStringForResult + " " + str(siteimpprop).replace('www.', 'www[.]').replace('http', 'hxxp'))
-                                laststring = "" + site.ReportStringForResult + " " + str(siteimpprop)
+                            if f'{site.ReportStringForResult} {str(siteimpprop)}' != laststring:
+                                print(f'{site.ReportStringForResult} {str(siteimpprop).replace("www.", "www[.]").replace("http", "hxxp")}')
+                                laststring = f'{site.ReportStringForResult} {str(siteimpprop)}'
                         #must be a list since it failed the isinstance check on string
                         else:
                             laststring = ""
                             for siteresult in siteimpprop:
-                                if "" + site.ReportStringForResult + " " + str(siteresult) != laststring:
-                                    print("" + site.ReportStringForResult + " " + str(siteresult).replace('www.', 'www[.]').replace('http', 'hxxp'))
-                                    laststring = "" + site.ReportStringForResult + " " + str(siteresult)
+                                if f'{site.ReportStringForResult} {str(siteresult)}' != laststring:
+                                    print(f'{site.ReportStringForResult} {str(siteresult).replace("www.", "www[.]").replace("http", "hxxp")}')
+                                    laststring = f'{site.ReportStringForResult} {str(siteresult)}'
         else:
             pass
 
@@ -211,48 +211,56 @@ class SiteDetailOutput(object):
                     for index in range(len(site.RegEx)):  # the regexs will ensure we have the exact number of lookups
                         siteimpprop = site.getImportantProperty(index)
                         if target != site.Target:
-                            print("\n____________________     Results found for: " + site.Target + "     ____________________")
+                            print(f"\n--- Results found for: {site.Target} ---")
                             target = site.Target
                         if siteimpprop is None or len(siteimpprop) == 0:
-                            print("No results in the " + site.FriendlyName[index] + " category")
+                            print(f"No results in the {site.FriendlyName[index]} category")
                         else:
                             if siteimpprop[index] is None or len(siteimpprop[index]) == 0:
-                                print(site.ReportStringForResult[index] + ' No results found')
+                                print(f'{site.ReportStringForResult[index]} No results found')
                             else:
                                 laststring = ""
                                 # if it's just a string we don't want it output like a list
                                 if isinstance(siteimpprop[index], str):
-                                    if "" + site.ReportStringForResult[index] + " " + str(siteimpprop) != laststring:
-                                        print("" + site.ReportStringForResult[index] + " " + str(siteimpprop).replace('www.', 'www[.]').replace('http', 'hxxp'))
-                                        laststring = "" + site.ReportStringForResult[index] + " " + str(siteimpprop)
+                                    if f'{site.ReportStringForResult[index]} {str(siteimpprop)}' != laststring:
+                                        if ('pDNSDATE' or ('VT' and 'Date') in (site._friendlyName[index]).split()) and len(siteimpprop) == 10 and siteimpprop.isdigit():
+                                            siteimpprop = datetime.utcfromtimestamp(int(siteimpprop)).strftime('%Y-%m-%d %H:%M:%S UTC')
+                                        if site._friendlyName[index] in ('VT Engine and Result','VT pDNSIP') and isinstance(siteimpprop, tuple):
+                                            siteimpprop = ' - '.join(siteimpprop)                                        
+                                        print(f'{site.ReportStringForResult[index]} {str(siteimpprop).replace("www.", "www[.]").replace("http", "hxxp")}')
+                                        laststring = f'{site.ReportStringForResult[index]} {str(siteimpprop)}'
                                 # must be a list since it failed the isinstance check on string
                                 else:
                                     laststring = ""
                                     for siteresult in siteimpprop[index]:
-                                        if "" + site.ReportStringForResult[index] + " " + str(siteresult) != laststring:
-                                            print("" + site.ReportStringForResult[index] + " " + str(siteresult).replace('www.', 'www[.]').replace('http', 'hxxp'))
-                                            laststring = "" + site.ReportStringForResult[index] + " " + str(siteresult)
+                                        if f'{site.ReportStringForResult[index]} {str(siteresult)}' != laststring:
+                                            if ('pDNSDATE' or ('VT' and 'Date') in (site._friendlyName[index]).split()) and len(siteresult) == 10 and siteresult.isdigit():
+                                                siteresult = datetime.utcfromtimestamp(int(siteresult)).strftime('%Y-%m-%d %H:%M:%S UTC')
+                                            if site._friendlyName[index] in ('VT Engine and Result','VT pDNSIP') and isinstance(siteresult, tuple):
+                                                siteresult = ' - '.join(siteresult)
+                                            print(f'{site.ReportStringForResult[index]} {str(siteresult).replace("www.", "www[.]").replace("http", "hxxp")}')
+                                            laststring = f'{site.ReportStringForResult[index]} {str(siteresult)}'
                 else:  # this is a singlesite
                     siteimpprop = site.getImportantProperty(0)
                     if target != site.Target:
-                        print("\n____________________     Results found for: " + site.Target + "     ____________________")
+                        print(f"\n--- Results found for: {site.Target}   ---")
                         target = site.Target
                     if siteimpprop is None or len(siteimpprop) == 0:
-                        print("[+] No results found in the " + site.FriendlyName)
+                        print(f"[+] No results found in the {site.FriendlyName}")
                     else:
                         laststring = ""
                         # if it's just a string we don't want it output like a list
                         if isinstance(siteimpprop, str):
-                            if "" + site.ReportStringForResult + " " + str(siteimpprop) != laststring:
-                                print("" + site.ReportStringForResult + " " + str(siteimpprop).replace('www.', 'www[.]').replace('http', 'hxxp'))
-                                laststring = "" + site.ReportStringForResult + " " + str(siteimpprop)
+                            if f'{site.ReportStringForResult} {str(siteimpprop)}' != laststring:
+                                print(f'{site.ReportStringForResult} {str(siteimpprop).replace("www.", "www[.]").replace("http", "hxxp")}')
+                                laststring = f'{site.ReportStringForResult} {str(siteimpprop)}'
                         # must be a list since it failed the isinstance check on string
                         else:
                             laststring = ""
                             for siteresult in siteimpprop:
-                                if "" + site.ReportStringForResult + " " + str(siteresult) != laststring:
-                                    print("" + site.ReportStringForResult + " " + str(siteresult).replace('www.', 'www[.]').replace('http', 'hxxp'))
-                                    laststring = "" + site.ReportStringForResult + " " + str(siteresult)
+                                if f'{site.ReportStringForResult} {str(siteresult)}' != laststring:
+                                    print(f'{site.ReportStringForResult} {str(siteresult).replace("www.", "www[.]").replace("http", "hxxp")}')
+                                    laststring = f'{site.ReportStringForResult} {str(siteresult)}'
         else:
             pass
 
@@ -289,7 +297,7 @@ class SiteDetailOutput(object):
                        cef_SignatureID, cef_Severity, cef_Extension]
         pattern = "^\[\+\]\s+"
         target = ""
-        print('\n[+] Generating CEF output: ' + cefoutfile)
+        print(f'\n[+] Generating CEF output: {cefoutfile}')
         f = open(cefoutfile, "wb")
         csv.register_dialect('escaped', delimiter='|', escapechar='\\', doublequote=False, quoting=csv.QUOTE_NONE)
         cefRW = csv.writer(f, 'escaped')
@@ -324,7 +332,7 @@ class SiteDetailOutput(object):
                                     typ = site.TargetType
                                     source = site.FriendlyName
                                     res = siteimpprop
-                                    if "" + tgt + typ + source + res != laststring:
+                                    if f'{tgt}{typ}{source}{res}' != laststring:
                                         cefRW.writerow([prefix] + cef_fields[:5] + \
                                           ["["+",".join(["tgt="+tgt,"typ="+typ,"src="+source,"res="+res])+"] " + \
                                                re.sub(pattern,"",site.ReportStringForResult[index])+ str(siteimpprop)] + \
@@ -338,7 +346,7 @@ class SiteDetailOutput(object):
                                         typ = site.TargetType
                                         source = site.FriendlyName[index]
                                         res =   siteresult
-                                        if "" + tgt + typ + source + str(res) != laststring:
+                                        if '{tgt}{typ}{source}{str(res)}' != laststring:
                                             cefRW.writerow([prefix] + cef_fields[:5] + ["["+",".join(["tgt="+tgt,"typ="+typ,"src="+source,"res="+str(res)])+"] " + re.sub(pattern, "", site.ReportStringForResult[index]) + str(siteresult)] + [cef_Severity] + [tgt])
                                             laststring = "" + tgt + typ + source + str(res)
                 else: # this is a singlesite
@@ -359,12 +367,12 @@ class SiteDetailOutput(object):
                             typ = site.TargetType
                             source = site.FriendlyName
                             res = siteimpprop
-                            if "" + tgt + typ + source + res != laststring:
+                            if f'{tgt}{typ}{source}{res}' != laststring:
                                 cefRW.writerow([prefix] + cef_fields[:5] + \
                                           ["["+",".join(["tgt="+tgt,"typ="+typ,"src="+source,"res="+res])+"] " + \
                                                re.sub(pattern,"",site.ReportStringForResult)+ str(siteimpprop)] + \
                                            [cef_Severity] + [tgt])
-                                laststring = "" + tgt + typ + source + res
+                                laststring = f'{tgt}{typ}{source}{res}'
                         else:
                             laststring = ""
                             for siteresult in siteimpprop:
@@ -372,16 +380,16 @@ class SiteDetailOutput(object):
                                 typ = site.TargetType
                                 source = site.FriendlyName
                                 res = siteresult
-                                if "" + tgt + typ + source + str(res) != laststring:
+                                if f'{tgt}{typ}{source}{str(res)}' != laststring:
                                     cefRW.writerow([prefix] + cef_fields[:5] + \
                                          ["["+",".join(["tgt="+tgt,"typ="+typ,"src="+source,"res="+str(res)])+"] " + \
                                                re.sub(pattern,"",site.ReportStringForResult)+ str(siteimpprop)] + \
                                            [cef_Severity] + [tgt])
-                                    laststring = "" + tgt + typ + source + str(res)
+                                    laststring = f'{tgt}{typ}{source}{str(res)}'
 
         f.flush()
         f.close()
-        print("" + cefoutfile + " Generated")
+        print(f'{cefoutfile} Generated')
 
 
     def PrintToTextFile(self,textoutfile):
@@ -400,7 +408,7 @@ class SiteDetailOutput(object):
         """
         sites = sorted(self.ListOfSites, key=attrgetter('Target'))
         target = ""
-        print("\n[+] Generating text output: " + textoutfile)
+        print(f"\n[+] Generating text output: {textoutfile}")
         f = open(textoutfile, "w")
         if sites is not None:
             for site in sites:
@@ -408,50 +416,64 @@ class SiteDetailOutput(object):
                     for index in range(len(site.RegEx)): #the regexs will ensure we have the exact number of lookups
                         siteimpprop = site.getImportantProperty(index)
                         if target != site.Target:
-                            f.write("\n____________________     Results found for: " + site.Target + "     ____________________")
+                            f.write(f"\n--- Results found for: {site.Target} ---")
                             target = site.Target
                         if siteimpprop is None or len(siteimpprop)==0:
-                            f.write("\nNo results in the " + site.FriendlyName[index] + " category")
+                            f.write(f"\nNo results in the {site.FriendlyName[index]} category")
                         else:
                             if siteimpprop[index] is None or len(siteimpprop[index]) == 0:
-                                f.write('\n' + site.ReportStringForResult[index] + ' No results found')
+                                f.write(f'\n{site.ReportStringForResult[index]} No results found')
                             else:
                                 laststring = ""
-                                #if it's just a string we don't want it to output like a list
                                 if isinstance(siteimpprop[index], str):
-                                    if "" + site.ReportStringForResult[index] + " " + str(siteimpprop) != laststring:
-                                        f.write("\n" + site.ReportStringForResult[index] + " " + str(siteimpprop))
-                                        laststring = "" + site.ReportStringForResult[index] + " " + str(siteimpprop)
+                                    if f'{site.ReportStringForResult[index]} {str(siteimpprop)}' != laststring:
+                                        if ('pDNSDATE' or ('VT' and 'Date') in (site._friendlyName[index]).split()) and len(siteimpprop) == 10 and siteimpprop.isdigit():
+                                            siteimpprop = datetime.utcfromtimestamp(int(siteimpprop)).strftime('%Y-%m-%d %H:%M:%S UTC')
+                                        if site._friendlyName[index] in ('VT Engine and Result','VT pDNSIP') and isinstance(siteimpprop, tuple):
+                                            siteimpprop = ' - '.join(siteimpprop)                                         
+                                        f.write(f"\n{site.ReportStringForResult[index]} {str(siteimpprop)}")
+                                        laststring = f"{site.ReportStringForResult[index]} {str(siteimpprop)}"
                                 #must be a list since it failed the isinstance check on string
                                 else:
                                     laststring = ""
                                     for siteresult in siteimpprop[index]:
-                                        if "" + site.ReportStringForResult[index] + " " + str(siteresult) != laststring:
-                                            f.write("\n" + site.ReportStringForResult[index] + " " + str(siteresult))
-                                            laststring = "" + site.ReportStringForResult[index] + " " + str(siteresult)
+                                        if f'{site.ReportStringForResult[index]} {str(siteresult)}' != laststring:
+                                            if ('pDNSDATE' or ('VT' and 'Date') in (site._friendlyName[index]).split()) and len(siteresult) == 10 and siteresult.isdigit():
+                                                siteresult = datetime.utcfromtimestamp(int(siteresult)).strftime('%Y-%m-%d %H:%M:%S UTC')
+                                            if site._friendlyName[index] in ('VT Engine and Result','VT pDNSIP') and isinstance(siteresult, tuple):
+                                                siteresult = ' - '.join(siteresult)                                            
+                                            f.write(f"\n{site.ReportStringForResult[index]} {str(siteresult)}")
+                                            laststring = f"{site.ReportStringForResult[index]} {str(siteresult)}"
                 else:#this is a singlesite
                     siteimpprop = site.getImportantProperty(0)
                     if target != site.Target:
-                        f.write("\n____________________     Results found for: " + site.Target + "     ____________________")
+                        f.write(f"\n--- Results found for: {site.Target} ---")
                         target = site.Target
                     if siteimpprop is None or len(siteimpprop)==0:
-                        f.write("\n[+] No results found in the " + site.FriendlyName)
+                        f.write(f"\n[+] No results found in the {site.FriendlyName}")
                     else:
                         laststring = ""
-                        #if it's just a string we don't want it output like a list
                         if isinstance(siteimpprop, str):
-                            if "" + site.ReportStringForResult + " " + str(siteimpprop) != laststring:
-                                f.write("\n" + site.ReportStringForResult + " " + str(siteimpprop))
-                                laststring = "" + site.ReportStringForResult + " " + str(siteimpprop)
+                            if f"{site.ReportStringForResult} {str(siteimpprop)}" != laststring:
+                                if ('pDNSDATE' or ('VT' and 'Date') in (site._friendlyName[index]).split()) and len(siteimpprop) == 10 and siteimpprop.isdigit():
+                                    siteimpprop = datetime.utcfromtimestamp(int(siteimpprop)).strftime('%Y-%m-%d %H:%M:%S UTC')
+                                if site._friendlyName[index] in ('VT Engine and Result','VT pDNSIP') and isinstance(siteimpprop, tuple):
+                                    siteimpprop = ' - '.join(siteimpprop)                                 
+                                f.write(f"\n{site.ReportStringForResult} {str(siteimpprop)}")
+                                laststring = f"{site.ReportStringForResult} {str(siteimpprop)}"
                         else:
                             laststring = ""
                             for siteresult in siteimpprop:
-                                if "" + site.ReportStringForResult + " " + str(siteresult) != laststring:
-                                    f.write("\n" + site.ReportStringForResult + " " + str(siteresult))
-                                    laststring = "" + site.ReportStringForResult + " " + str(siteresult)
+                                if f"{site.ReportStringForResult} {str(siteresult)}" != laststring:
+                                    if ('pDNSDATE' or ('VT' and 'Date') in (site._friendlyName[index]).split()) and len(siteresult) == 10 and siteresult.isdigit():
+                                        siteresult = datetime.utcfromtimestamp(int(siteresult)).strftime('%Y-%m-%d %H:%M:%S UTC')
+                                    if site._friendlyName[index] in ('VT Engine and Result','VT pDNSIP') and isinstance(siteresult, tuple):
+                                        siteresult = ' - '.join(siteresult)                                    
+                                    f.write(f"\n{site.ReportStringForResult} {str(siteresult)}")
+                                    laststring = f"{site.ReportStringForResult} {str(siteresult)}"
         f.flush()
         f.close()
-        print("" + textoutfile + " Generated")
+        print(f"{textoutfile} Generated")
 
     def PrintToCSVFile(self,csvoutfile):
         """
@@ -469,7 +491,7 @@ class SiteDetailOutput(object):
         """
         sites = sorted(self.ListOfSites, key=attrgetter('Target'))
         target = ""
-        print('\n[+] Generating CSV output: ' + csvoutfile)
+        print(f'\n[+] Generating CSV output: {csvoutfile}')
         f = open(csvoutfile, "wb")
         csvRW = csv.writer(f, quoting=csv.QUOTE_ALL)
         csvRW.writerow(['Target', 'Type', 'Source', 'Result'])
@@ -493,16 +515,14 @@ class SiteDetailOutput(object):
                                 csvRW.writerow([tgt,typ,source,res])
                             else:
                                 laststring = ""
-                                #if it's just a string we don't want it to output like a list
                                 if isinstance(siteimpprop, str):
                                     tgt = site.Target
                                     typ = site.TargetType
                                     source = site.FriendlyName
                                     res = siteimpprop
-                                    if "" + tgt + typ + source + res != laststring:
+                                    if f'{tgt}{typ}{source}{res}' != laststring:
                                         csvRW.writerow([tgt,typ,source,res])
-                                        laststring = "" + tgt + typ + source + res
-                                #must be a list since it failed the isinstance check on string
+                                        laststring = f"{tgt}{typ}{source}{res}"
                                 else:
                                     laststring = ""
                                     for siteresult in siteimpprop[index]:
@@ -510,9 +530,9 @@ class SiteDetailOutput(object):
                                         typ = site.TargetType
                                         source = site.FriendlyName[index]
                                         res = siteresult
-                                        if "" + tgt + typ + source + str(res) != laststring:
+                                        if f"{tgt}{typ}{source}{str(res)}" != laststring:
                                             csvRW.writerow([tgt,typ,source,res])
-                                            laststring = "" + tgt + typ + source + str(res)
+                                            laststring = f"{tgt}{typ}{source}{str(res)}"
                 else:#this is a singlesite
                     siteimpprop = site.getImportantProperty(0)
                     if siteimpprop is None or len(siteimpprop)==0:
@@ -529,9 +549,9 @@ class SiteDetailOutput(object):
                             typ = site.TargetType
                             source = site.FriendlyName
                             res = siteimpprop
-                            if "" + tgt + typ + source + res != laststring:
+                            if f"{tgt}{typ}{source}{res}" != laststring:
                                 csvRW.writerow([tgt,typ,source,res])
-                                laststring = "" + tgt + typ + source + res
+                                laststring = f"{tgt}{typ}{source}{res}"
                         else:
                             laststring = ""
                             for siteresult in siteimpprop:
@@ -539,13 +559,13 @@ class SiteDetailOutput(object):
                                 typ = site.TargetType
                                 source = site.FriendlyName
                                 res = siteresult
-                                if "" + tgt + typ + source + str(res) != laststring:
+                                if f"{tgt}{typ}{source}{str(res)}" != laststring:
                                     csvRW.writerow([tgt,typ,source,res])
-                                    laststring = "" + tgt + typ + source + str(res)
+                                    laststring = f"{tgt}{typ}{source}{str(res)}"
 
         f.flush()
         f.close()
-        print("" + csvoutfile + " Generated")
+        print(f"{csvoutfile} Generated")
 
     def PrintToHTMLFile(self, htmloutfile):
         """
@@ -563,7 +583,7 @@ class SiteDetailOutput(object):
         """
         sites = sorted(self.ListOfSites, key=attrgetter('Target'))
         target = ""
-        print('\n[+] Generating HTML output: ' + htmloutfile)
+        print(f'\n[+] Generating HTML output: {htmloutfile}')
         f = open(htmloutfile, "w")
         f.write(self.getHTMLOpening())
         if sites is not None:
@@ -576,7 +596,7 @@ class SiteDetailOutput(object):
                             typ = site.TargetType
                             source = site.FriendlyName[index]
                             res = "No results found"
-                            tableData = '<tr><td>' + tgt + '</td><td>' + typ + '</td><td>' + source + '</td><td>' + str(res) + '</td></tr>'
+                            tableData = f'<tr><td>{tgt}</td><td>{typ}</td><td>{source}</td><td>{str(res)}</td></tr>'
                             f.write(tableData)
                         else:
                             if siteimpprop[index] is None or len(siteimpprop[index])==0:
@@ -584,7 +604,7 @@ class SiteDetailOutput(object):
                                 typ = site.TargetType
                                 source = site.FriendlyName[index]
                                 res = "No results found"
-                                tableData = '<tr><td>' + tgt + '</td><td>' + typ + '</td><td>' + source + '</td><td>' + str(res) + '</td></tr>'
+                                tableData = f'<tr><td>{tgt}</td><td>{typ}</td><td>{source}</td><td>{str(res)}</td></tr>'
                                 f.write(tableData)
                             else:
                                 # if it's just a string we don't want it to output like a list
@@ -593,7 +613,7 @@ class SiteDetailOutput(object):
                                     typ = site.TargetType
                                     source = site.FriendlyName
                                     res = siteimpprop
-                                    tableData = '<tr><td>' + tgt + '</td><td>' + typ + '</td><td>' + source + '</td><td>' + str(res) + '</td></tr>'
+                                    tableData = f'<tr><td>{tgt}</td><td>{typ}</td><td>{source}</td><td>{str(res)}</td></tr>'
                                     f.write(tableData)
                                 else:
                                     for siteresult in siteimpprop[index]:
@@ -601,7 +621,7 @@ class SiteDetailOutput(object):
                                         typ = site.TargetType
                                         source = site.FriendlyName[index]
                                         res = siteresult
-                                        tableData = '<tr><td>' + tgt + '</td><td>' + typ + '</td><td>' + source + '</td><td>' + str(res) + '</td></tr>'
+                                        tableData = f'<tr><td>{tgt}</td><td>{typ}</td><td>{source}</td><td>{str(res)}</td></tr>'
                                         f.write(tableData)
                 else:  # this is a singlesite
                     siteimpprop = site.getImportantProperty(0)
@@ -610,7 +630,7 @@ class SiteDetailOutput(object):
                         typ = site.TargetType
                         source = site.FriendlyName
                         res = "No results found"
-                        tableData = '<tr><td>' + tgt + '</td><td>' + typ + '</td><td>' + source + '</td><td>' + str(res) + '</td></tr>'
+                        tableData = f'<tr><td>{tgt}</td><td>{typ}</td><td>{source}</td><td>{str(res)}</td></tr>'
                         f.write(tableData)
                     else:
                         # if it's just a string we don't want it output like a list
@@ -619,7 +639,7 @@ class SiteDetailOutput(object):
                             typ = site.TargetType
                             source = site.FriendlyName
                             res = siteimpprop
-                            tableData = '<tr><td>' + tgt + '</td><td>' + typ + '</td><td>' + source + '</td><td>' + str(res) + '</td></tr>'
+                            tableData = f'<tr><td>{tgt}</td><td>{typ}</td><td>{source}</td><td>{str(res)}</td></tr>'
                             f.write(tableData)
                         else:
                             for siteresult in siteimpprop:
@@ -627,12 +647,12 @@ class SiteDetailOutput(object):
                                 typ = site.TargetType
                                 source = site.FriendlyName
                                 res = siteresult
-                                tableData = '<tr><td>' + tgt + '</td><td>' + typ + '</td><td>' + source + '</td><td>' + str(res) + '</td></tr>'
+                                tableData = f'<tr><td>{tgt}</td><td>{typ}</td><td>{source}</td><td>{str(res)}</td></tr>'
                                 f.write(tableData)
         f.write(self.getHTMLClosing())
         f.flush()
         f.close()
-        print("" + htmloutfile + " Generated")
+        print(f"{htmloutfile} Generated")
 
     @classmethod
     def PrintStandardOutput(cls, strout, *args, **kwargs):
@@ -747,7 +767,7 @@ class SiteDetailOutput(object):
             </table>
             <br>
             <br>
-            <p>Created using Automater.py by @TekDefense <a href="http://www.tekdefense.com">http://www.tekdefense.com</a>; <a href="https://github.com/1aN0rmus/TekDefense">https://github.com/1aN0rmus/TekDefense</a></p>
+            <p>Created using automater by @TekDefense and digitalsleuth <a href="http://www.tekdefense.com">http://www.tekdefense.com</a>; <a href="https://github.com/digitalsleuth/TekDefense-Automater">https://github.com/digitalsleuth/TekDefense-Automater</a></p>
             </body>
             </html>
             '''

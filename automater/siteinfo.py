@@ -29,12 +29,13 @@ import requests
 import re
 import time
 import os
+import pathlib
 from os import listdir
 from os.path import isfile, join
 from requests.exceptions import ConnectionError
-from modules.outputs import SiteDetailOutput
-from modules.inputs import SitesFile
-from modules.utilities import VersionChecker
+from outputs import SiteDetailOutput
+from inputs import SitesFile
+from utilities import VersionChecker
 
 requests.packages.urllib3.disable_warnings()
 
@@ -71,7 +72,7 @@ class SiteFacade(object):
         self._verbose = verbose
 
     def runSiteAutomation(self, webretrievedelay, proxy, targetlist, sourcelist,
-                          useragent, botoutputrequested, refreshremotexml, versionlocation):
+                          useragent, botoutputrequested, refreshremotexml, versionlocation, xmlPath):
         """
         Builds site objects representative of each site listed in the xml
         config file. Appends a Site object or one of it's subordinate objects
@@ -103,14 +104,15 @@ class SiteFacade(object):
         if refreshremotexml:
             SitesFile.updateTekDefenseXMLTree(proxy, self._verbose)
 
-        remotesitetree = SitesFile.getXMLTree(__TEKDEFENSEXML__, self._verbose)
-        localsitetree = SitesFile.getXMLTree(__SITESXML__, self._verbose)
+        remotesitefile = f'{xmlPath}{os.sep}{__TEKDEFENSEXML__}'
+        localsitefile = f'{xmlPath}{os.sep}{__SITESXML__}'
+        remotesitetree = SitesFile.getXMLTree(remotesitefile, self._verbose)
+        localsitetree = SitesFile.getXMLTree(localsitefile, self._verbose)
 
         if not localsitetree and not remotesitetree:
-            print('Unfortunately there is neither a {tekd} file nor a {sites} file that can be utilized for proper' \
+            print(f'Unfortunately there is neither a {__TEKDEFENSEXML__} file nor a {__SITESXML__} file that can be utilized for proper' \
                   ' parsing.\nAt least one configuration XML file must be available for Automater to work properly.\n' \
-                  'Please see {url} for further instructions.'\
-                .format(tekd=__TEKDEFENSEXML__, sites=__SITESXML__, url=versionlocation))
+                  f'Please see {versionlocation} for further instructions.')
         else:
             if localsitetree:
                 for siteelement in localsitetree.iter(tag="site"):
@@ -123,8 +125,8 @@ class SiteFacade(object):
                                     self.buildSiteList(siteelement, webretrievedelay, proxy, targettype, target,
                                                        useragent, botoutputrequested)
                     else:
-                        print('A problem was found in the {sites} file. There appears to be a site entry with ' \
-                              'unequal numbers of regexs and reporting requirements'.format(sites=__SITESXML__))
+                        print(f'A problem was found in the {__SITESXML__} file. There appears to be a site entry with ' \
+                              'unequal numbers of regexs and reporting requirements')
             if remotesitetree:
                 for siteelement in remotesitetree.iter(tag="site"):
                     if self.siteEntryIsValid(siteelement):
@@ -136,8 +138,8 @@ class SiteFacade(object):
                                     self.buildSiteList(siteelement, webretrievedelay, proxy, targettype, target,
                                                        useragent, botoutputrequested)
                     else:
-                        print('A problem was found in the {sites} file. There appears to be a site entry with ' \
-                              'unequal numbers of regexs and reporting requirements'.format(sites=__SITESXML__))
+                        print(f'A problem was found in the {__SITESXML__} file. There appears to be a site entry with ' \
+                              'unequal numbers of regexs and reporting requirements')
 
     def getSiteInfoIfSiteTypesMatch(self, source, target, siteelement):
         if source == "allsources" or source == siteelement.get("name"):
@@ -212,7 +214,7 @@ class SiteFacade(object):
         if ipFind is not None and len(ipFind) > 0:
             return "ip"
 
-        md5 = re.compile('[a-fA-F0-9]{32}', re.IGNORECASE)
+        md5 = re.compile('[a-fA-F0-9]{32}', re.IGNORECASE|re.ASCII)
         md5Find = re.findall(md5,target)
         if md5Find is not None and len(md5Find) > 0:
             return "md5"
@@ -354,8 +356,9 @@ class Site(object):
 
     @classmethod
     def checkmoduleversion(self, prefix, gitlocation, proxy, verbose):
-        execpath = os.path.dirname(os.path.realpath(__file__))
-        pythonfiles = [f for f in listdir(execpath) if isfile(join(execpath, f)) and f[-3:] == '.py']
+        filepath = pathlib.PureWindowsPath(__file__)
+        execpath = str(filepath.parent)
+        pythonfiles = [os.path.join(execpath, f) for f in listdir(execpath) if isfile(join(execpath, f)) and f[-3:] == '.py']
         if proxy:
             proxies = {'https': proxy, 'http': proxy}
         else:
@@ -1192,15 +1195,14 @@ class Site(object):
         try:
             time.sleep(delay)
             resp = requests.get(self.FullURL, headers=headers, params=params, proxies=proxy, verify=False, timeout=5)
-            return str(resp.content)
+            return str(resp.text)
         except ConnectionError as ce:
             try:
-                self.postErrorMessage('[-] Cannot connect to {url}. Server response is {resp} Server error code is {code}'.
-                                      format(url=self.FullURL, resp=ce.message[0], code=ce.message[1][0]))
+                self.postErrorMessage(f'[-] Cannot connect to {self.FullURL}. Server response is {ce.message[0]} Server error code is {ce.message[1][0]}')
             except:
-                self.postErrorMessage('[-] Cannot connect to ' + self.FullURL)
+                self.postErrorMessage(f'[-] Cannot connect to {self.FullURL}')
         except:
-            self.postErrorMessage('[-] Cannot connect to ' + self.FullURL)
+            self.postErrorMessage(f'[-] Cannot connect to {self.FullURL}')
 
     def addMultiResults(self, results, index):
         """
@@ -1248,15 +1250,14 @@ class Site(object):
         headers, params, proxy = self.getHeaderParamProxyInfo()
         try:
             resp = requests.post(self.FullURL, data=self.PostData, headers=headers, params=params, proxies=proxy, verify=False)
-            return str(resp.content)
+            return str(resp.text)
         except ConnectionError as ce:
             try:
-                self.postErrorMessage('[-] Cannot connect to {url}. Server response is {resp} Server error code is {code}'.
-                                      format(url=self.FullURL, resp=ce.message[0], code=ce.message[1][0]))
+                self.postErrorMessage(f'[-] Cannot connect to {self.FullURL}. Server response is {ce.message[0]} Server error code is {ce.message[1][0]}')
             except:
-                self.postErrorMessage('[-] Cannot connect to ' + self.FullURL)
+                self.postErrorMessage(f'[-] Cannot connect to {self.FullURL}')
         except:
-            self.postErrorMessage('[-] Cannot connect to ' + self.FullURL)
+            self.postErrorMessage(f'[-] Cannot connect to {self.FullURL}')
 
 
 class SingleResultsSite(Site):
@@ -1290,7 +1291,7 @@ class SingleResultsSite(Site):
                                                 self._site.ImportantPropertyString, self._site.Params,
                                                 self._site.Headers, self._site.Method, self._site.PostData,
                                                 site._verbose)
-        self.postMessage(self.UserMessage + " " + self.FullURL)
+        self.postMessage(f'{self.UserMessage} {self.FullURL}')
         websitecontent = self.getContentList(self.getWebScrape())
         if websitecontent:
             self.addResults(websitecontent)
@@ -1313,11 +1314,12 @@ class SingleResultsSite(Site):
         The Method has no restrictions.
         """
         try:
-            repattern = re.compile(self.RegEx, re.IGNORECASE)
+            repattern = re.compile(self.RegEx, re.IGNORECASE|re.ASCII)
             foundlist = re.findall(repattern, webcontent)
+            print(webcontent)
             return foundlist
         except:
-            self.postErrorMessage(self.ErrorMessage + " " + self.FullURL)
+            self.postErrorMessage(f'{self.ErrorMessage} {self.FullURL}')
             return None
 
 class MultiResultsSite(Site):
@@ -1354,7 +1356,7 @@ class MultiResultsSite(Site):
                                               self._site.ImportantPropertyString, self._site.Params,
                                               self._site.Headers, self._site.Method, self._site.PostData, site._verbose)
         self._results = [[] for x in range(len(self._site.RegEx))]
-        self.postMessage(self.UserMessage + " " + self.FullURL)
+        self.postMessage(f'{self.UserMessage} {self.FullURL}')
 
         webcontent = self.getWebScrape()
         for index in range(len(self.RegEx)):
@@ -1381,11 +1383,12 @@ class MultiResultsSite(Site):
         The Method has no restrictions.
         """
         try:
-            repattern = re.compile(self.RegEx[index], re.IGNORECASE)
+            repattern = re.compile(self.RegEx[index], re.IGNORECASE|re.ASCII)
             foundlist = re.findall(repattern, webcontent)
+            print(webcontent)
             return foundlist
         except:
-            self.postErrorMessage(self.ErrorMessage + " " + self.FullURL)
+            self.postErrorMessage(f'{self.ErrorMessage} {self.FullURL}')
             return None
 
 class MethodPostSite(Site):
@@ -1431,11 +1434,9 @@ class MethodPostSite(Site):
                                              self._site.ImportantPropertyString,
                                              self._site.Params, self._site.Headers,
                                              self._site.Method, self._site.PostData, site._verbose)
-        self.postMessage(self.UserMessage + " " + self.FullURL)
-        SiteDetailOutput.PrintStandardOutput('[-] {url} requires a submission for {target}. '
-                                             'Submitting now, this may take a moment.'.
-                                             format(url=self._site.URL, target=self._site.Target),
-                                             verbose=site._verbose)
+        self.postMessage(f'{self.UserMessage} {self.FullURL}')
+        SiteDetailOutput.PrintStandardOutput(f'[-] {self._site.URL} requires a submission for {self._site.Target}. '
+                                             'Submitting now, this may take a moment.', verbose=site._verbose)
         content = self.submitPost()
         if content:
             if not isinstance(self.FriendlyName, str):  # this is a multi instance
@@ -1465,11 +1466,11 @@ class MethodPostSite(Site):
         """
         try:
             if index == -1: # this is a return for a single instance site
-                repattern = re.compile(self.RegEx, re.IGNORECASE)
+                repattern = re.compile(self.RegEx, re.IGNORECASE|re.ASCII)
                 foundlist = re.findall(repattern, content)
                 return foundlist
             else: # this is the return for a multisite
-                repattern = re.compile(self.RegEx[index], re.IGNORECASE)
+                repattern = re.compile(self.RegEx[index], re.IGNORECASE|re.ASCII)
                 foundlist = re.findall(repattern, content)
                 return foundlist
         except:

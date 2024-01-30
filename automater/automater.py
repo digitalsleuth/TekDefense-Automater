@@ -37,14 +37,14 @@ No exceptions exported.
 """
 
 import sys
-from modules.siteinfo import SiteFacade, Site
-from modules.utilities import Parser, IPWrapper
-from modules.outputs import SiteDetailOutput
-from modules.inputs import TargetFile
+from siteinfo import SiteFacade, Site
+from utilities import Parser, IPWrapper
+from outputs import SiteDetailOutput
+from inputs import TargetFile
 
-__VERSION__ = '0.21'
-__GITLOCATION__ = 'https://github.com/1aN0rmus/TekDefense-Automater'
-__GITFILEPREFIX__ = 'https://raw.githubusercontent.com/1aN0rmus/TekDefense-Automater/master/'
+__VERSION__ = '1.0.0'
+__GITLOCATION__ = 'https://github.com/digitalsleuth/TekDefense-Automater'
+__GITFILEPREFIX__ = 'https://raw.githubusercontent.com/digitalsleuth/TekDefense-Automater/master/'
 
 def main():
     """
@@ -65,12 +65,13 @@ def main():
 
     # if no target run and print help
     if parser.hasNoTarget():
-        print('[!] No argument given.')
-        parser.print_help()  # need to fix this. Will later
-        sys.exit()
+        if parser.VersionCheck:
+            Site.checkmoduleversion(__GITFILEPREFIX__, __GITLOCATION__, parser.Proxy, parser.Verbose)
+        else:
+            print('[!] No argument given.')
+            parser.print_help()  # need to fix this. Will later
+            sys.exit()
 
-    if parser.VersionCheck:
-        Site.checkmoduleversion(__GITFILEPREFIX__, __GITLOCATION__, parser.Proxy, parser.Verbose)
 
     # user may only want to run against one source - allsources
     # is the seed used to check if the user did not enter an s tag
@@ -98,12 +99,18 @@ def main():
         else:
             targetlist.append(tgtstrstripped)
 
+    xmlPath = parser.XML        
     sitefac = SiteFacade(parser.Verbose)
     sitefac.runSiteAutomation(parser.Delay, parser.Proxy, targetlist, sourcelist, parser.UserAgent, parser.hasBotOut,
-                              parser.RefreshRemoteXML, __GITLOCATION__)
+                              parser.RefreshRemoteXML, __GITLOCATION__, xmlPath)
     sites = sitefac.Sites
     if sites:
         SiteDetailOutput(sites).createOutputInfo(parser)
+
+
+def version():
+    return __VERSION__
+
 
 if __name__ == "__main__":
     main()

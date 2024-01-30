@@ -1,12 +1,15 @@
 #!/usr/bin/env python3
 from setuptools import setup, find_packages
+from os.path import expanduser
+
+USER_HOME_DIR = expanduser("~") + '/'
 
 with open("README.md", encoding='utf8') as readme:
     long_description = readme.read()
 
 setup(
     name="TekDefense-Automater",
-    version="0.3.0",
+    version="1.0.0",
     author="Corey Forman",
     license="MIT",
     url="https://github.com/digitalsleuth/TekDefense-Automater",
@@ -19,14 +22,11 @@ setup(
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],
-#    install_requires=[
-#        "python-dateutil",
-#        "colorama"
-#    ],
     entry_points={
         'console_scripts': [
-            'automater = modules.automater:main'
+            'automater = automater.automater:main'
         ]
     },
-    package_data={'': ['README.md, LICENSE, sites.xml, tekdefense.xml, docs']}
+    package_data={'automater': ['README.md, LICENSE, tekdefense.xml, sites.xml, docs']},
+    data_files=[(USER_HOME_DIR, ['tekdefense.xml', 'sites.xml'])],
 )
