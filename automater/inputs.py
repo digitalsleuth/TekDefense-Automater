@@ -20,7 +20,7 @@ No exceptions exported.
 import os
 import hashlib
 import requests
-from outputs import SiteDetailOutput
+from automater.outputs import SiteDetailOutput
 from requests.exceptions import ConnectionError
 from requests.exceptions import HTTPError
 from xml.etree.ElementTree import ElementTree
