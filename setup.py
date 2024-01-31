@@ -8,7 +8,7 @@ with open("README.md", encoding='utf8') as readme:
     long_description = readme.read()
 
 setup(
-    name="TekDefense-Automater",
+    name="automater",
     version="1.0.0",
     author="Corey Forman",
     license="MIT",
