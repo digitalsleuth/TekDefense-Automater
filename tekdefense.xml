@@ -1,0 +1,360 @@
+<?xml version="1.0"?>
+<automater_root>
+    <site name="unshortenme">
+        <sitetype>
+            <entry>hostname</entry>
+        </sitetype>
+        <domainurl>https://unshorten.me</domainurl>
+        <reportstringforresult>
+            <entry>[+] UnShorten.ME URL redirects to:</entry>
+        </reportstringforresult>
+        <sitefriendlyname>
+            <entry>UnShorten Redirect</entry>
+        </sitefriendlyname>
+        <regex>
+            <entry>(?&lt;=\&lt;resolved_url\&gt;).+(?=\&lt;/resolved_url\&gt;)</entry>
+        </regex>
+        <fullurl>https://unshorten.me/xml/%TARGET%</fullurl>
+        <importantproperty>
+            <entry>Results</entry>
+        </importantproperty>
+    </site>
+    <site name="urlvoid">
+        <sitetype>
+        <entry>hostname</entry>
+        </sitetype>
+        <domainurl>https://www.urlvoid.com/</domainurl>
+        <reportstringforresult>
+            <entry>[+] URLVoid IP:</entry>
+            <entry>[+] URLVoid detection count:</entry>
+            <entry>[+] URLVoid Domain Age:</entry>
+            <entry>[+] URLVoid Geo Coordinates:</entry>
+            <entry>[+] URLVoid Country:</entry>
+        </reportstringforresult>
+        <sitefriendlyname>
+            <entry>UV IP</entry>
+            <entry>UV Detections</entry>
+            <entry>UV Domain</entry>
+            <entry>UV Location</entry>
+            <entry>UV Country</entry>
+        </sitefriendlyname>
+        <regex>
+            <entry>(?&lt;=IP\sAddress\&lt;/span\&gt;\&lt;/td\&gt;\&lt;td\&gt;\&lt;strong\&gt;).+(?=\&lt;/strong\&gt;)</entry>
+            <entry>(?&lt;=label-success\"\&gt;)\d{1,2}/\d{1,2}</entry>
+            <entry>(?&lt;=Domain\sRegistration\&lt;/span\&gt;\&lt;/td\&gt;\&lt;td\&gt;).+ago</entry>
+            <entry>(?&lt;=Longitude\&lt;/span\&gt;\&lt;/td\&gt;\&lt;td\&gt;)\d{1,3}\.\d{1,5}\s/\s-?\d{1,3}\.\d{1,5}</entry>
+            <entry>\.gif\"\salt=\"\"\s/\&gt;(.*?)\&lt;</entry>
+        </regex>
+        <fullurl>https://www.urlvoid.com/scan/%TARGET%</fullurl>
+        <importantproperty>
+            <entry>Results</entry>
+            <entry>Results</entry>
+            <entry>Results</entry>
+            <entry>Results</entry>
+            <entry>Results</entry>
+        </importantproperty>
+        <params>
+            <entry key="ip">%TARGET%</entry>
+            <entry key="go">Scan Now</entry>
+        </params>
+        <headers>
+            <entry key="Content-type">application/x-www-form-urlencoded</entry>
+        </headers>
+    </site>
+    <site name="IPStack">
+        <sitetype>
+            <entry>ip</entry>
+        </sitetype>
+        <domainurl>https://ipstack.com</domainurl>
+        <reportstringforresult>
+            <entry>[+] IPStack Country Name:</entry>
+            <entry>[+] IPStack Region Name:</entry>
+            <entry>[+] IPStack City:</entry>
+            <entry>[+] IPStack Zipcode:</entry>
+            <entry>[+] IPStack Latitude:</entry>
+            <entry>[+] IPStack Longitude:</entry>
+        </reportstringforresult>
+        <sitefriendlyname>
+            <entry>IPS CN</entry>
+            <entry>IPS RN</entry>
+            <entry>IPS City</entry>
+            <entry>IPS Zip</entry>
+            <entry>IPS LAT</entry>
+            <entry>IPS LON</entry>
+        </sitefriendlyname>
+        <regex>
+            <entry>country_name...\"(.*?)\"</entry>
+            <entry>region_name...\"(.*?)\"</entry>
+            <entry>\"city\"..\"(.*?)\"</entry>
+            <entry>\"zip\"..\"(.*?)\"</entry>
+            <entry>latitude..\s(.*?),</entry>
+            <entry>longitude..\s(.*?),</entry>
+        </regex>
+        <fullurl>http://api.ipstack.com/%TARGET%</fullurl>
+        <importantproperty>
+            <entry>Results</entry>
+            <entry>Results</entry>
+            <entry>Results</entry>
+            <entry>Results</entry>
+            <entry>Results</entry>
+            <entry>Results</entry>
+        </importantproperty>
+        <params>
+            <entry key="access_key"></entry>
+            <entry key="output">json</entry>
+        </params>
+        <headers>
+            <entry key="content-type">application/json</entry>
+        </headers>
+    </site>
+    <site name="SANS API">
+        <sitetype>
+            <entry>ip</entry>
+        </sitetype>
+        <domainurl>https://isc.sans.edu/</domainurl>
+        <reportstringforresult>
+            <entry>[+] SANS total target IPs seen:</entry>
+            <entry>[+] SANS total packets blocked:</entry>
+            <entry>[+] SANS last seen on:</entry>
+            <entry>[+] SANS first seen on:</entry>
+        </reportstringforresult>
+        <sitefriendlyname>
+            <entry>SANS attacks</entry>
+            <entry>SANS count</entry>
+            <entry>SANS maxdate</entry>
+            <entry>SANS mindate</entry>
+        </sitefriendlyname>
+        <regex>
+            <entry>attacks\&gt;(\d+)\&lt;</entry>
+            <entry>count\&gt;(\d+)\&lt;</entry>
+            <entry>maxdate\&gt;(\d{4}-\d{2}-\d{2})\&lt;</entry>
+            <entry>mindate\&gt;(\d{4}-\d{2}-\d{2})\&lt;</entry>
+        </regex>
+        <fullurl>https://isc.sans.edu/api/ip/%TARGET%</fullurl>
+        <importantproperty>
+            <entry>Results</entry>
+            <entry>Results</entry>
+            <entry>Results</entry>
+            <entry>Results</entry>
+        </importantproperty>
+    </site>
+    <site name="Project Honeypot">
+        <sitetype>
+            <entry>ip</entry>
+        </sitetype>
+        <domainurl>https://www.projecthoneypot.org</domainurl>
+        <reportstringforresult>
+            <entry>[+] ProjectHoneypot geographic location:</entry>
+            <entry>[+] ProjectHoneypot activity type:</entry>
+            <entry>[+] ProjectHoneypot first mail received:</entry>
+            <entry>[+] ProjectHoneypot last mail received:</entry>
+            <entry>[+] ProjectHoneypot total mails received:</entry>
+            <entry>[+] ProjectHoneypot spider first seen:</entry>
+            <entry>[+] ProjectHoneypot spider last seen:</entry>
+            <entry>[+] ProjectHoneypot spider sightings:</entry>
+            <entry>[+] ProjectHoneypot user-agent sightings:</entry>
+            <entry>[+] ProjectHoneypot first post on:</entry>
+            <entry>[+] ProjectHoneypot last post on:</entry>
+            <entry>[+] ProjectHoneypot form posts:</entry>
+            <entry>[+] ProjectHoneypot first rule break on:</entry>
+            <entry>[+] ProjectHoneypot last rule break on:</entry>
+            <entry>[+] ProjectHoneypot rule break sightings:</entry>
+            <entry>[+] ProjectHoneypot first dictionary attack on:</entry>
+            <entry>[+] ProjectHoneypot last dictionary attack on:</entry>
+            <entry>[+] ProjectHoneypot dictionary attack sightings:</entry>
+            <entry>[+] ProjectHoneypot harvester first seen:</entry>
+            <entry>[+] ProjectHoneypot harvester last seen:</entry>
+            <entry>[+] ProjectHoneypot harvester sightings:</entry>
+            <entry>[+] ProjectHoneypot harvester results:</entry>
+        </reportstringforresult>
+        <sitefriendlyname>
+            <entry>geolocation</entry>
+            <entry>type</entry>
+            <entry>firstmail</entry>
+            <entry>lastmail</entry>
+            <entry>mailtotal</entry>
+            <entry>firstspider</entry>
+            <entry>lastspider</entry>
+            <entry>spidertotal</entry>
+            <entry>useragents</entry>
+            <entry>firstpost</entry>
+            <entry>lastpost</entry>
+            <entry>posttotal</entry>
+            <entry>firstbreak</entry>
+            <entry>lastbreaks</entry>
+            <entry>totalbreaks</entry>
+            <entry>firstdictionary</entry>
+            <entry>lastdictionary</entry>
+            <entry>totaldictionary</entry>
+            <entry>firstharvester</entry>
+            <entry>lastharvester</entry>
+            <entry>harvestersightings</entry>
+            <entry>harvesterresults</entry>
+        </sitefriendlyname>
+        <regex>
+            <entry>Geographic.{1,6}Location.+\s+.+\s.+alt=\"([a-zA-Z0-9\s\-]+)\"</entry>
+            <entry>list_of_ips\.php\?t=[a-z]\&quot;\&gt;([a-zA-Z\s]+)\&lt;\/a\&gt;\&lt;\/b\&gt;</entry>
+            <entry>\&gt;First\&amp;nbsp;Received\&amp;nbsp;From.+[\n\r\t\s]+.+[\n\r\t\s]+([a-zA-Z0-9,\s]+[a-zA-Z])[a-zA-Z0-9\&gt;\&lt;\&quot;\&amp;:,()=;\s\t\/]+Number\&amp;nbsp;Received</entry>
+            <entry>\&gt;Last\&amp;nbsp;Received\&amp;nbsp;From.+[\n\r\t\s]+.+[\n\r\t\s]+([a-zA-Z0-9,\s]+[a-zA-Z])[a-zA-Z0-9\&gt;\&lt;\&quot;:,()=;\s\t\/]+Number\&amp;nbsp;Received</entry>
+            <entry>\&gt;Number\&amp;nbsp;Received.+[\n\r\t\s]+.+[\n\r\t\s]+([a-zA-Z0-9,\s\(\)]+[a-zA-Z\)])</entry>
+            <entry>\&gt;Spider\&amp;nbsp;First\&amp;nbsp;Seen.+[\n\r\t\s]+.+[\n\r\t\s]+([a-zA-Z0-9,\s]+[a-zA-Z])</entry>
+            <entry>\&gt;Spider\&amp;nbsp;Last\&amp;nbsp;Seen.+[\n\r\t\s]+.+[\n\r\t\s]+([a-zA-Z0-9,\s\(\)]+[a-zA-Z])</entry>
+            <entry>\&gt;Spider\&amp;nbsp;Sightings.+[\n\r\t\s]+.+[\n\r\t\s]+([a-zA-Z0-9,\s]+[a-zA-Z\)])</entry>
+            <entry>\&gt;User-Agents.+[\n\r\t\s]+.+[\n\r\t\s]+([a-zA-Z0-9\-\(\),\s]+[a-zA-Z\)])</entry>
+            <entry>\&gt;First\&amp;nbsp;Post\&amp;nbsp;On.+[\n\r\t\s]+.+[\n\r\t\s]+([a-zA-Z0-9,\s]+[a-zA-Z])</entry>
+            <entry>\&gt;Last\&amp;nbsp;Post\&amp;nbsp;On.+[\n\r\t\s]+.+[\n\r\t\s]+([a-zA-Z0-9,\s]+[a-zA-Z])</entry>
+            <entry>\&gt;Form\&amp;nbsp;Posts.+[\n\r\t\s]+.+[\n\r\t\s]+([a-zA-Z0-9,\s\(\)]+[a-zA-Z\)])</entry>
+            <entry>\&gt;First\&amp;nbsp;Rule-Break\&amp;nbsp;On.+[\n\r\t\s]+.+[\n\r\t\s]+([a-zA-Z0-9,\s]+[a-zA-Z])</entry>
+            <entry>\&gt;Last\&amp;nbsp;Rule-Break\&amp;nbsp;On.+[\n\r\t\s]+.+[\n\r\t\s]+([a-zA-Z0-9,\s]+[a-zA-Z])</entry>
+            <entry>\&gt;Rule\&amp;nbsp;Breaks.+[\n\r\t\s]+.+[\n\r\t\s]+([a-zA-Z0-9,\s\(\)]+[a-zA-Z\)])</entry>
+            <entry>Dictionary\&amp;nbsp;Attacks[a-zA-Z0-9\&gt;\&lt;\&quot;:,()=;\s\t\/]+\&gt;First\&amp;nbsp;Received\&amp;nbsp;From.+[\n\r\t\s]+.+[\n\r\t\s]+([a-zA-Z0-9,\s]+[a-zA-Z])</entry>
+            <entry>Dictionary\&amp;nbsp;Attacks[a-zA-Z0-9\&gt;\&lt;\&quot;\&amp;:,()=;\s\t\/]+\&gt;Last\&amp;nbsp;Received\&amp;nbsp;From.+[\n\r\t\s]+.+[\n\r\t\s]+([a-zA-Z0-9,\s]+[a-zA-Z])</entry>
+            <entry>\&gt;Dictionary\&amp;nbsp;Attacks.+[\n\r\t\s]+.+[\n\r\t\s]+([a-zA-Z0-9,\s\(\)]+[a-zA-Z\)])</entry>
+            <entry>\&gt;Harvester\&amp;nbsp;First\&amp;nbsp;Seen.+[\n\r\t\s]+.+[\n\r\t\s]+([a-zA-Z0-9,\s]+[a-zA-Z])</entry>
+            <entry>\&gt;Harvester\&amp;nbsp;Last\&amp;nbsp;Seen.+[\n\r\t\s]+.+[\n\r\t\s]+([a-zA-Z0-9,\s\(\)]+[a-zA-Z])</entry>
+            <entry>\&gt;Harvester\&amp;nbsp;Sightings.+[\n\r\t\s]+.+[\n\r\t\s]+([a-zA-Z0-9,\s]+[a-zA-Z\)])</entry>
+            <entry>(?:\&gt;Harvester\&amp;nbsp;Results(?:.+[\n\s].+[\n\s]+)\s{2,}|(?:\&lt;br\s\/\&gt;))(?!\s)([0-9a-zA-Z.\-\s:,()]+)\s{2,}</entry>
+        </regex>
+        <fullurl>http://www.projecthoneypot.org/ip_%TARGET%</fullurl>
+        <importantproperty>
+            <entry>Results</entry>
+            <entry>Results</entry>
+            <entry>Results</entry>
+            <entry>Results</entry>
+            <entry>Results</entry>
+            <entry>Results</entry>
+            <entry>Results</entry>
+            <entry>Results</entry>
+            <entry>Results</entry>
+            <entry>Results</entry>
+            <entry>Results</entry>
+            <entry>Results</entry>
+            <entry>Results</entry>
+            <entry>Results</entry>
+            <entry>Results</entry>
+            <entry>Results</entry>
+            <entry>Results</entry>
+            <entry>Results</entry>
+            <entry>Results</entry>
+            <entry>Results</entry>
+            <entry>Results</entry>
+            <entry>Results</entry>
+        </importantproperty>
+    </site>
+    <site name="vtpDNSIP">
+        <sitetype>
+            <entry>ip</entry>
+        </sitetype>
+        <domainurl>https://www.virustotal.com</domainurl>
+        <reportstringforresult>
+            <entry>[+] VT ASN:</entry>
+            <entry>[+] VT Country:</entry>
+            <entry>[+] VT AS Owner:</entry>
+            <entry>[+] VT Whois Date:</entry>
+            <entry>[+] VT Whois NetRange:</entry>
+            <entry>[+] VT Whois NetName:</entry>
+            <entry>[+] VT Whois Address:</entry>
+            <entry>[+] VT Analysis:</entry>
+        </reportstringforresult>
+        <sitefriendlyname>
+            <entry>VT ASN</entry>
+            <entry>VT Country</entry>
+            <entry>VT AS Owner</entry>
+            <entry>VT Whois Date</entry>
+            <entry>VT Whois NetRange</entry>
+            <entry>VT Whois NetName</entry>
+            <entry>VT Whois Address</entry>
+            <entry>VT Analysis</entry>
+        </sitefriendlyname>
+        <regex>
+            <entry>asn...(\w+)</entry>
+            <entry>country....(\w+)\"\,</entry>
+            <entry>(?&lt;=owner....)[A-Za-z0-9_\s\./\\-]*</entry>
+            <entry>whois_date...(\d{10})</entry>
+            <entry>\"whois\":\s\"(?:NetRange:\s)([0-9\.]+\s\-\s[0-9\.]+)</entry>
+            <entry>\"whois\":\s\"(?:.*\s[0-9\.]+\s\-\s[0-9\.]+\\n[A-Z:\s[0-9\.\/]+)\\n(?:NetName:\s)([a-zA-Z0-9\-]+)</entry>
+            <entry>\"whois\":\s\"(?:.*\s[0-9\.]+\s\-\s[0-9\.]+\\n[A-Z:\s0-9\.\/]+\\n[a-zA-Z:\s0-9\.\/-]+)+[a-zA-Z:\s0-9\.\/-]+.+(?:Address:\s)([\sa-zA-Z0-9#\\n]+.+)\\nCity:\s([a-zA-Z0-9#\\n]+)\\nStateProv:\s([a-zA-Z0-9\\n]+)\\nPostalCode:\s([a-zA-Z0-9\-]+)\\nCountry:\s([a-zA-Z\s]+)\\n(RegDate:\s[a-zA-Z0-9\-]+)\\n(Updated:\s[a-zA-Z0-9\-]+)\\n</entry>
+            <entry>last_analysis_stats.{1,4}\s.{1,20}(malicious)\"\:\s(\d{0,3}).{1,10}\s.{1,20}(suspicious)\"\:\s(\d{0,3}).{1,10}\s.{1,20}(undetected)\"\:\s(\d{0,3}).{1,10}\s.{1,20}(harmless)\"\:\s(\d{0,3}).{1,10}\s.{1,20}(?:timeout)</entry>
+        </regex>
+        <fullurl>https://www.virustotal.com/api/v3/ip_addresses/%TARGET%</fullurl>
+        <importantproperty>
+            <entry>Results</entry>
+            <entry>Results</entry>
+            <entry>Results</entry>
+            <entry>Results</entry>
+            <entry>Results</entry>
+            <entry>Results</entry>
+            <entry>Results</entry>
+            <entry>Results</entry>
+        </importantproperty>
+        <headers>
+            <entry key="x-apikey"></entry>
+        </headers>
+    </site>
+    <site name="virustotal">
+        <sitetype>
+            <entry>md5</entry>
+        </sitetype>
+        <domainurl>https://www.virustotal.com</domainurl>
+        <reportstringforresult>
+            <entry>[+] VT MD5 submission count:</entry>
+            <entry>[+] VT Last Submission Date:</entry>
+            <entry>[+] VT Number of detections:</entry>
+            <entry>[+] VT Engine | Result:</entry>
+        </reportstringforresult>
+        <sitefriendlyname>
+            <entry>VT Found</entry>
+            <entry>VT Date</entry>
+            <entry>VT Number of detections</entry>
+            <entry>VT Engine and Result</entry>
+        </sitefriendlyname>
+        <regex>
+            <entry>times_submitted...(\d{0,3})</entry>
+            <entry>last_submission_date...(\d{10})</entry>
+            <entry>last_analysis_stats....\s\s{1,50}.malicious...(\d{0,3})</entry>
+            <entry>(?&lt;=engine_name)\"..\"([a-zA-Z0-9\s_]+.+)\".\s{1,50}[a-zA-Z0-9\"\s:_.,]+malicious.,\s{1,50}.result...\"(.*?)\"</entry>
+        </regex>
+        <fullurl>https://www.virustotal.com/api/v3/files/%TARGET%</fullurl>
+        <importantproperty>
+            <entry>Results</entry>
+            <entry>Results</entry>
+            <entry>Results</entry>
+            <entry>Results</entry>
+        </importantproperty>
+        <headers>
+            <entry key="content-type">application/json</entry>
+            <entry key="x-apikey"></entry>
+        </headers>
+    </site>
+    <site name="vtpDNSDom">
+        <sitetype>
+            <entry>hostname</entry>
+        </sitetype>
+        <domainurl>https://www.virustotal.com/</domainurl>
+        <reportstringforresult>
+            <entry>[+] VT DNS Records:</entry>
+            <entry>[+] VT DNS Last DNS Records Date:</entry>
+            <entry>[+] VT DNS Last Analysis Stats:</entry>
+        </reportstringforresult>
+        <sitefriendlyname>
+            <entry>VT pDNSIP</entry>
+            <entry>VT pDNSDATE</entry>
+            <entry>VT pDNSSTATS</entry>
+        </sitefriendlyname>
+        <regex>
+            <entry>\s{1,50}.\s{1,50}.type....(.*?)\",\s{1,50}.value....(.*?)\"</entry>
+            <entry>last_dns_records_date...(\d{10})</entry>
+            <entry>last_analysis_stats.{1,4}\s.{1,20}(malicious)\"\:\s(\d{0,3}).{1,10}\s.{1,20}(suspicious)\"\:\s(\d{0,3}).{1,10}\s.{1,20}(undetected)\"\:\s(\d{0,3}).{1,10}\s.{1,20}(harmless)\"\:\s(\d{0,3}).{1,10}\s.{1,20}</entry>
+        </regex>
+        <fullurl>https://www.virustotal.com/api/v3/domains/%TARGET%</fullurl>
+        <importantproperty>
+            <entry>Results</entry>
+            <entry>Results</entry>
+            <entry>Results</entry>
+        </importantproperty>
+        <headers>
+            <entry key="x-apikey"></entry>
+            <entry key="content-type">application/json</entry>
+        </headers>
+    </site>
+</automater_root>
