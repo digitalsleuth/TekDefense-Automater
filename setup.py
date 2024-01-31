@@ -27,6 +27,6 @@ setup(
             'automater = automater.automater:main'
         ]
     },
-    package_data={'automater': ['README.md, LICENSE, tekdefense.xml, sites.xml, docs']},
+    package_data={'': ['README.md, LICENSE, tekdefense.xml, sites.xml, docs']},
     data_files=[(USER_HOME_DIR, ['tekdefense.xml', 'sites.xml'])],
 )
