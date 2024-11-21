@@ -1,3 +1,20 @@
+Metadata-Version: 2.1
+Name: automater
+Version: 1.0.0
+Summary: Python 3 port of TekDefense Automater
+Author: 1aN0rmus
+Author-email: "Corey Forman (digitalsleuth)" <github@digitalsleuth.ca>
+Maintainer-email: "Corey Forman (digitalsleuth)" <github@digitalsleuth.ca>
+Project-URL: Homepage, https://github.com/digitalsleuth/tekdefense-automater
+Keywords: digital forensics,dfir,automater
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+
 TekDefense-Automater Version: 0.21
 ====================
 

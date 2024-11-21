@@ -1,0 +1,36 @@
+[build-system]
+requires = ["setuptools >= 61.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+exclude = ["docs"]
+
+[project]
+name = "automater"
+version = "1.0.0"
+dependencies = [
+    "requests",
+]
+requires-python = ">=3.8"
+authors = [
+  {name = "Corey Forman (digitalsleuth)", email = "github@digitalsleuth.ca"},
+  {name = "1aN0rmus" }
+]
+maintainers = [
+  {name = "Corey Forman (digitalsleuth)", email = "github@digitalsleuth.ca"}
+]
+description = "Python 3 port of TekDefense Automater"
+readme = "README.md"
+keywords = ["digital forensics", "dfir", "automater"]
+classifiers = [
+  "Development Status :: 5 - Production/Stable",
+  "Programming Language :: Python :: 3",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: OS Independent"
+]
+
+[project.urls]
+Homepage = "https://github.com/digitalsleuth/tekdefense-automater"
+
+[project.scripts]
+automater = "automater.automater:main"
